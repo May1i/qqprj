@@ -1,7 +1,7 @@
-QT       += core gui
-
+QT += core gui
+QT +=network
+QT +=sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -17,15 +17,33 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    search_friend.cpp \
+    signin.cpp \
+    usersql.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    search_friend.h \
+    signin.h \
+    usersql.h
 
 FORMS += \
-    mainwindow.ui
+    chat.ui \
+    mainwindow.ui \
+    search_friend.ui \
+    signin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    signin1.qrc
+
+DISTFILES += \
+    C:/Users/DELL/Desktop/qq.jpg \
+    Networkerror.qml \
+    NetworkerrorForm.ui.qml \
+    lib/qq.jpg

@@ -1,2 +1,11 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/">
+        <file>lib/qq.jpg</file>
+        <file>lib/minwid.png</file>
+        <file>lib/close.png</file>
+        <file>lib/qqsignin.gif</file>
+        <file>lib/lock.png</file>
+        <file>lib/keyb.png</file>
+        <file>lib/text.png</file>
+    </qresource>
+</RCC>

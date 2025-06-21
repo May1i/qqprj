@@ -17,6 +17,6 @@ search_friend::~search_friend()
 void search_friend::on_searchBtn_clicked()
 {
     QString str=ui->searchLine->toPlainText().toUtf8();
-
+    qDebug()<<"1";
 }
 

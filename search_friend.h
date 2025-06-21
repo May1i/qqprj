@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QDebug>
 #include "usersql.h"
+#include "signal.h"
+#include <QHBoxLayout>
+#include <QLabel>
+#include<QPainter>
 namespace Ui {
 class search_friend;
 }
@@ -18,6 +22,7 @@ public:
 
 private slots:
     void on_searchBtn_clicked();
+    void addUserToList(const QString &username, const QString &account, const QPixmap &icon);
 private:
     usersql *m_db;
     Ui::search_friend *ui;

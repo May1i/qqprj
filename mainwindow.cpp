@@ -1,13 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-MainWindow::MainWindow(usersql *db,QString account,QWidget *parent,QTcpSocket *tcpClient)
+MainWindow::MainWindow(QString account,QWidget *parent,QTcpSocket *tcpClient)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->scrollArea->setFrameShape(QFrame::NoFrame);
-    usersql db;
-    db.conndata();
+    usersql *db=new usersql();
+    db->conndata();
+    search_w=new search_friend(db,nullptr);
+    search_w->hide();
     QListWidgetItem *newItem=new QListWidgetItem(ui->listWidget);
     newItem->setText("111");
     ui->listWidget->addItem(newItem);
@@ -30,7 +32,7 @@ void MainWindow::showicon(QString account)
     systemtrayicon->show();//进行图标显示
 }
 
-void MainWindow::on_pushButton_menu_clicked(bool checked)
+void MainWindow::on_pushButton_menu_clicked()
 {
     opMenu=new QMenu(this);
     QAction *action1=opMenu->addAction("加好友");
@@ -46,7 +48,6 @@ void MainWindow::on_pushButton_menu_clicked(bool checked)
     });
     connect(action1,&QAction::triggered,[this]()
     {
-        search_w=new search_friend(db,this);
         search_w->show();
     });
 

@@ -17,8 +17,9 @@
 #pragma execution_character_set("utf-8")
 #endif //防止中文乱码
 
-class usersql
+class usersql:public QObject
 {
+    Q_OBJECT
 private:
 
      QSqlDatabase dbconn;//进行数据库的链接
@@ -36,8 +37,10 @@ private:
      //搜索功能
      QString searchUsername;
      QPixmap searchIcon;
+     QString searchAcc;
 public:
-    usersql();
+    explicit usersql(QObject *parent = nullptr);  // 建议传递parent
+     ~usersql();
     bool conndata();//连接到数据库
     bool queryuser(const QString &user,const QString &passwd);//查询是否有该用户
     QPixmap get_iconurl(const QString &url);//下载图片
@@ -58,6 +61,8 @@ public:
     QString getIP()const;
     void setIP(const QString &value);
     void searchUserInfo(const QString &account);//进行用户搜索
+signals:
+    void userFound(const QString &username, const QString &account, const QPixmap &icon);
 };
 
 #endif // USERSQL_H

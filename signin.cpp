@@ -176,7 +176,7 @@ void signin::on_pushButton_clicked()
     {
         this->network = new QNetworkAccessManager(this);//进行网络初始化
         //line_edit 为密码框 line2为账号
-        usersql db;
+
         db.conndata();//进行数据库连接
         bool isuser=db.queryuser(ui->lineEdit_2->text(),ui->lineEdit->text());//确认是否为数据库内用户
         if(isuser)

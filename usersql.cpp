@@ -1,10 +1,10 @@
 #include "usersql.h"
-usersql::usersql()
+usersql::usersql(QObject *parent) : QObject(parent) {  // 初始化QObject
+    // 构造函数实现
+}
+usersql::~usersql()
 {
-//    if (!conndata()) {
-//           qDebug() << "程序启动时数据库连接失败！";
-//            // 可以在这里添加错误处理（如显示警告框）
-//    }
+
 }
 //连接数据库
 bool usersql::conndata()
@@ -137,12 +137,16 @@ void usersql::searchUserInfo(const QString &account)
     {
         if(this->query.value(2)==account)
         {
-            this->searchUsername=this->query.value(1).toString();
-            this->searchIcon=get_iconurl(this->query.value(5).toString());//iconurl
-            qDebug()<<this->searchUsername;
-            qDebug()<<this->searchIcon;
+            QString searchUsername = query.value(1).toString();
+            QPixmap searchIcon = get_iconurl(query.value(5).toString());
+            QString searchAcc = query.value(2).toString();
+
+            qDebug()<<this->searchIcon<<this->searchUsername<<this->searchAcc;
+            emit userFound(searchUsername, searchAcc, searchIcon); // 触发信号
+            return;
         }
     }
+    qDebug()<<"没有找到该账户";
 }
 //get set
 

@@ -48,7 +48,7 @@ class signin : public QWidget
     QSize m_si2;
     QMovie *m_movie;
     //数据库
-    usersql Asuka_sql;
+    usersql db;
     MainWindow *w;
     bool network;//确保是否正常连接上网络
     //自定义下拉框

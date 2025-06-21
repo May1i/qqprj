@@ -28,7 +28,7 @@ public:
     ~MainWindow();
     void showicon(QString account);
 private slots:
-    void on_pushButton_menu_clicked(bool checked);
+    void on_pushButton_menu_clicked();
 
 private:
     Ui::MainWindow *ui;

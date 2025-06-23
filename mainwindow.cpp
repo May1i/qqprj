@@ -1,18 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-MainWindow::MainWindow(QString account,QWidget *parent,QTcpSocket *tcpClient)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QString account,usersql *db,QWidget *parent,QTcpSocket *tcpClient)
+    : QMainWindow(parent),m_db(db), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->scrollArea->setFrameShape(QFrame::NoFrame);
-    usersql *db=new usersql();
-    db->conndata();
+//    ui->scrollArea->setFrameShape(QFrame::NoFrame);
     search_w=new search_friend(account,db,nullptr);
     search_w->hide();
     QListWidgetItem *newItem=new QListWidgetItem(ui->listWidget);
     newItem->setText("111");
     ui->listWidget->addItem(newItem);
+    //进行联系人显示
+    connect(m_db, &usersql::friendFound, this, &MainWindow::addFriendToList);
 }
 
 MainWindow::~MainWindow()
@@ -51,4 +50,36 @@ void MainWindow::on_pushButton_menu_clicked()
         search_w->show();
     });
 
+}
+//联系人显示
+void MainWindow::addFriendToList(const QString &username, const QString &account, const QPixmap &icon)
+{
+    // 创建列表项
+    QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
+    // 创建自定义Widget（包含头像和文字）
+    QWidget *itemWidget = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout(itemWidget);
+    // 添加头像
+    QLabel *iconLabel = new QLabel();
+    //圆形头像实现
+    QPixmap circularPixmap(40, 40);
+    circularPixmap.fill(Qt::transparent);
+    QPainter painter(&circularPixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    QPainterPath path;
+    path.addEllipse(0, 0, 40, 40);
+    painter.setClipPath(path);
+    painter.drawPixmap(0, 0, icon.scaled(40, 40, Qt::KeepAspectRatio));
+
+    iconLabel->setPixmap(circularPixmap);
+    // 添加文字（用户名  账号）
+    QLabel *textLabel = new QLabel();
+    textLabel->setText(QString("%1\t%2").arg(username).arg(account));
+    // 组合布局
+    layout->addWidget(iconLabel);
+    layout->addWidget(textLabel);
+    layout->setContentsMargins(5, 5, 5, 5);
+    // 设置列表项
+    item->setSizeHint(itemWidget->sizeHint());
+    ui->listWidget->setItemWidget(item, itemWidget);
 }

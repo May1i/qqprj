@@ -176,21 +176,20 @@ void signin::on_pushButton_clicked()
     {
         this->network = new QNetworkAccessManager(this);//进行网络初始化
         //line_edit 为密码框 line2为账号
-
-        db.conndata();//进行数据库连接
-        bool isuser=db.queryuser(ui->lineEdit_2->text(),ui->lineEdit->text());//确认是否为数据库内用户
+        db->conndata();//进行数据库连接
+        bool isuser=db->queryuser(ui->lineEdit_2->text(),ui->lineEdit->text());//确认是否为数据库内用户
         if(isuser)
         {
             QString account=ui->lineEdit_2->text();
-            db.queryUserInfo(account);
-            QString name=db.getUsername();
+            db->queryUserInfo(account);
+            QString name=db->getUsername();
             QString passwd="";
             if(ui->checkBox_2->isChecked())
             {
-                passwd=db.getPasswd();
+                passwd=db->getPasswd();
             }
 
-            QPixmap icon=db.getIcon();
+            QPixmap icon=db->getIcon();
 
             QString fileName=QCoreApplication::applicationDirPath();//获取当前的程序目录
             QString add="//..//Userfile";
@@ -252,7 +251,7 @@ void signin::on_pushButton_clicked()
             {
                 this->hide();
                 systemtrayicon->hide();
-                w = new MainWindow(account);
+                w = new MainWindow(account,db);
                 w->show();
                 w->showicon(account);
                 w->setAttribute(Qt::WA_DeleteOnClose);//如果窗口设置了Qt::WA_DeleteOnClose 这个属性，在窗口接受了关闭事件后，Qt会释放这个窗口所占用的资源。

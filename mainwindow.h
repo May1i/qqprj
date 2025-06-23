@@ -24,13 +24,15 @@ private:
     QSystemTrayIcon *systemtrayicon;
     search_friend *search_w;
 public:
-    MainWindow(QString account,QWidget *parent = nullptr,QTcpSocket *tcpClient=nullptr);
+    MainWindow(QString account,usersql *db,QWidget *parent = nullptr,QTcpSocket *tcpClient=nullptr);
     ~MainWindow();
     void showicon(QString account);
+    void addFriendToList(const QString &username, const QString &account, const QPixmap &icon);
 private slots:
     void on_pushButton_menu_clicked();
 
 private:
+    usersql *m_db;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

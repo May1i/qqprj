@@ -61,10 +61,10 @@ public:
     QString getIP()const;
     void setIP(const QString &value);
     void searchUserInfo(const QString &account);//进行用户搜索
-    void showFriends(const QString &account);
+    void showFriends(const QString &account);//联系人显示
 signals:
     void userFound(const QString &username, const QString &account, const QPixmap &icon);
-
+    void friendFound(const QString &username, const QString &account, const QPixmap &icon);
 };
 
 #endif // USERSQL_H

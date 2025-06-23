@@ -181,6 +181,32 @@ bool usersql::addFriendDirectly(const QString &userId, const QString &friendId)
     qDebug() << "好友添加成功！";
     return true;
 }
+//进行联系人显示
+void usersql::showFriends(const QString &account)
+{
+    this->query.exec("select *from `friends`");
+    QString friendAcc;
+    while (query.next())
+    {
+        if(this->query.value(1)==account)
+        {
+            friendAcc=this->query.value(2).toString();
+        }
+    }
+    this->query.exec(cmd);
+    while(query.next())
+    {
+        if(this->query.value(2)==friendAcc)
+        {
+            QString friendName = query.value(1).toString();
+            QPixmap friendIcon = get_iconurl(query.value(5).toString());
+            QString friendAcc = query.value(2).toString();
+            emit friendFound(friendName,friendAcc,friendIcon); // 触发信号
+            return;
+        }
+    }
+    qDebug()<<"联系人列表为空";
+}
 
 //get set
 

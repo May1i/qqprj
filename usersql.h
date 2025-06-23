@@ -46,7 +46,7 @@ public:
     QPixmap get_iconurl(const QString &url);//下载图片
     QPixmap getPixmapIcon(const QString &acc);//通过账号获取地址
     void queryUserInfo(const QString &account);//获取信息
-
+    bool addFriendDirectly(const QString &userId,const QString &friendId);//直接进行好友添加
 
     //get set
     QString getAccount()const;
@@ -61,8 +61,10 @@ public:
     QString getIP()const;
     void setIP(const QString &value);
     void searchUserInfo(const QString &account);//进行用户搜索
+    void showFriends(const QString &account);
 signals:
     void userFound(const QString &username, const QString &account, const QPixmap &icon);
+
 };
 
 #endif // USERSQL_H

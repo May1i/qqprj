@@ -1,8 +1,8 @@
 #include "search_friend.h"
 #include "ui_search_friend.h"
 
-search_friend::search_friend(usersql *db,QWidget *parent) :
-    QWidget(parent),m_db(db),
+search_friend::search_friend(QString  userId,usersql *db,QWidget *parent) :
+    QWidget(parent),m_db(db),userId(userId),
     ui(new Ui::search_friend)
 {
     ui->setupUi(this);
@@ -74,6 +74,19 @@ void search_friend::addUserToList(const QString &username, const QString &accoun
     textLabel->setText(QString("%1\t%2").arg(username).arg(account));
     QPushButton *textAddBtn=new QPushButton();
     textAddBtn->setText("添加好友");
+    connect(textAddBtn,&QPushButton::clicked,[this,account]()
+    {
+        if(m_db->addFriendDirectly(userId,account))
+        {
+            qDebug()<<"添加好友成功";
+        }
+        else
+        {
+            qDebug()<<"添加好友失败";
+        }
+    }
+
+    );
     // 组合布局
     layout->addWidget(iconLabel);
     layout->addWidget(textLabel);

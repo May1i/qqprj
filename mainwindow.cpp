@@ -8,7 +8,7 @@ MainWindow::MainWindow(QString account,QWidget *parent,QTcpSocket *tcpClient)
     ui->scrollArea->setFrameShape(QFrame::NoFrame);
     usersql *db=new usersql();
     db->conndata();
-    search_w=new search_friend(db,nullptr);
+    search_w=new search_friend(account,db,nullptr);
     search_w->hide();
     QListWidgetItem *newItem=new QListWidgetItem(ui->listWidget);
     newItem->setText("111");

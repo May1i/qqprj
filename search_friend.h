@@ -17,7 +17,7 @@ class search_friend : public QWidget
     Q_OBJECT
 
 public:
-    explicit search_friend(usersql *db,QWidget *parent = nullptr);
+    explicit search_friend(QString userId,usersql *db,QWidget *parent = nullptr);
     ~search_friend();
 
 private slots:
@@ -25,6 +25,8 @@ private slots:
     void addUserToList(const QString &username, const QString &account, const QPixmap &icon);
 private:
     usersql *m_db;
+    QString userId;
+
     Ui::search_friend *ui;
 
 };

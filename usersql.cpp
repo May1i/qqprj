@@ -148,6 +148,40 @@ void usersql::searchUserInfo(const QString &account)
     }
     qDebug()<<"没有找到该账户";
 }
+// 进行直接好友添加
+bool usersql::addFriendDirectly(const QString &userId, const QString &friendId)
+{
+    if(userId==friendId)
+    {
+        qDebug()<<"不能添加自己为好友!";
+        return false;
+    }
+    // 避免重复添加
+    query.prepare("SELECT id FROM friends WHERE user_id = :user_id AND friend_id = :friend_id");
+    query.bindValue(":user_id", userId);
+    query.bindValue(":friend_id", friendId);
+    if (!query.exec())
+    {
+        qDebug() << "查询好友关系失败：" << query.lastError();
+        return false;
+    }
+    if (query.next())
+    {
+        qDebug() << "你们已经是好友了！";
+        return false;
+    }
+    query.prepare("INSERT INTO friends (user_id, friend_id) VALUES (:user_id, :friend_id)");
+    query.bindValue(":user_id", userId);
+    query.bindValue(":friend_id", friendId);
+    if (!query.exec())
+    {
+        qDebug() << "添加好友失败：" << query.lastError();
+        return false;
+    }
+    qDebug() << "好友添加成功！";
+    return true;
+}
+
 //get set
 
 QPixmap usersql::getIcon() const

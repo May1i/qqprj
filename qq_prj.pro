@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    chat.cpp \
     main.cpp \
     mainwindow.cpp \
     search_friend.cpp \
@@ -23,12 +24,14 @@ SOURCES += \
     usersql.cpp
 
 HEADERS += \
+    chat.h \
     mainwindow.h \
     search_friend.h \
     signin.h \
     usersql.h
 
 FORMS += \
+    chat.ui \
     mainwindow.ui \
     search_friend.ui \
     signin.ui

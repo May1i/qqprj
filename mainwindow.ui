@@ -20,7 +20,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="backLabel">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -36,20 +36,23 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="userIconLabel">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>60</width>
-      <height>60</height>
+      <width>80</width>
+      <height>80</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(253, 249, 255);</string>
+     <string notr="true">width: 200px;
+height: 200px;
+border-radius: 50%;
+border: 2px solid rgb(255, 255, 255,0);</string>
     </property>
     <property name="text">
-     <string>12132</string>
+     <string>icon</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
@@ -134,6 +137,40 @@ font: 13pt &quot;黑体&quot;;</string>
       <width>420</width>
       <height>800</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="userNameLabel">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>30</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255,0);
+font: 16pt &quot;黑体&quot;;</string>
+    </property>
+    <property name="text">
+     <string>name</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="userAccLabel">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>70</y>
+      <width>120</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255,0);
+font: 12pt &quot;黑体&quot;;</string>
+    </property>
+    <property name="text">
+     <string>acc</string>
     </property>
    </widget>
   </widget>

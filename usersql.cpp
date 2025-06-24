@@ -184,28 +184,34 @@ bool usersql::addFriendDirectly(const QString &userId, const QString &friendId)
 //进行联系人显示
 void usersql::showFriends(const QString &account)
 {
-    this->query.exec("select *from `friends`");
-    QString friendAcc;
-    while (query.next())
-    {
-        if(this->query.value(1)==account)
-        {
-            friendAcc=this->query.value(2).toString();
-        }
+    // 清空旧查询
+    query.finish();
+    //join查询
+    query.prepare(
+        "SELECT u.username, u.account, u.icon_url "
+        "FROM friends f "
+        "JOIN user u ON f.friend_id = u.account "
+        "WHERE f.user_id = ?"
+    );
+    query.addBindValue(account);
+
+    if (!query.exec()) {
+        qDebug() << "查询失败:" << query.lastError();
+        return;
     }
-    this->query.exec(cmd);
-    while(query.next())
-    {
-        if(this->query.value(2)==friendAcc)
-        {
-            QString friendName = query.value(1).toString();
-            QPixmap friendIcon = get_iconurl(query.value(5).toString());
-            QString friendAcc = query.value(2).toString();
-            emit friendFound(friendName,friendAcc,friendIcon); // 触发信号
-            return;
-        }
+    bool hasFriends = false;//判断有没有联系人
+    while (query.next()) {
+        QString friendName = query.value(0).toString();
+        QString friendAcc = query.value(1).toString();
+        QPixmap friendIcon = get_iconurl(query.value(2).toString());
+        qDebug() << "好友:" << friendName << friendAcc;
+        emit friendFound(friendName, friendAcc, friendIcon);
+        hasFriends = true;
     }
-    qDebug()<<"联系人列表为空";
+
+    if (!hasFriends) {
+        qDebug() << "联系人列表为空";
+    }
 }
 
 //get set

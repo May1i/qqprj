@@ -8,6 +8,9 @@
 #include <QMenu>
 #include "usersql.h"
 #include "search_friend.h"
+#include <QListWidgetItem>
+#include"chat.h"
+#include <QMap>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -23,11 +26,15 @@ private:
     //系统托盘
     QSystemTrayIcon *systemtrayicon;
     search_friend *search_w;
+    QMap<QString, chat*> m_chatWindows; // 账号到窗口的映射
 public:
     MainWindow(QString account,usersql *db,QWidget *parent = nullptr,QTcpSocket *tcpClient=nullptr);
     ~MainWindow();
     void showicon(QString account);
     void addFriendToList(const QString &username, const QString &account, const QPixmap &icon);
+    void onFriendItemClicked(QListWidgetItem *item);
+    //主界面显示用户信息
+    void showUserInfo(const QString &username, const QString &account, const QPixmap &icon);
 private slots:
     void on_pushButton_menu_clicked();
 

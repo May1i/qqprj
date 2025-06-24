@@ -33,6 +33,7 @@ private slots:
 
 private:
     usersql *m_db;
+    QString account;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

@@ -29,7 +29,6 @@ HEADERS += \
     usersql.h
 
 FORMS += \
-    chat.ui \
     mainwindow.ui \
     search_friend.ui \
     signin.ui

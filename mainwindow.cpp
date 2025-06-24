@@ -1,17 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 MainWindow::MainWindow(QString account,usersql *db,QWidget *parent,QTcpSocket *tcpClient)
-    : QMainWindow(parent),m_db(db), ui(new Ui::MainWindow)
+    : QMainWindow(parent),m_db(db),account(account), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 //    ui->scrollArea->setFrameShape(QFrame::NoFrame);
     search_w=new search_friend(account,db,nullptr);
     search_w->hide();
-    QListWidgetItem *newItem=new QListWidgetItem(ui->listWidget);
-    newItem->setText("111");
-    ui->listWidget->addItem(newItem);
+//    QListWidgetItem *newItem=new QListWidgetItem(ui->listWidget);
+//    ui->listWidget->addItem(newItem);
     //进行联系人显示
+
     connect(m_db, &usersql::friendFound, this, &MainWindow::addFriendToList);
+    m_db->showFriends(account);
 }
 
 MainWindow::~MainWindow()
@@ -74,12 +75,16 @@ void MainWindow::addFriendToList(const QString &username, const QString &account
     iconLabel->setPixmap(circularPixmap);
     // 添加文字（用户名  账号）
     QLabel *textLabel = new QLabel();
-    textLabel->setText(QString("%1\t%2").arg(username).arg(account));
+    textLabel->setText(QString("%1").arg(username));
     // 组合布局
     layout->addWidget(iconLabel);
     layout->addWidget(textLabel);
-    layout->setContentsMargins(5, 5, 5, 5);
+    layout->setContentsMargins(0, 5, 5, 5);
     // 设置列表项
     item->setSizeHint(itemWidget->sizeHint());
+//    ui->listWidget->addItem(item);
     ui->listWidget->setItemWidget(item, itemWidget);
+//    if (ui->listWidget->count()==0) {
+//        qDebug() << "列表为空";
+//    }
 }

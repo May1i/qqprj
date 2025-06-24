@@ -26,7 +26,6 @@ private slots:
 private:
     usersql *m_db;
     QString userId;
-
     Ui::search_friend *ui;
 
 };

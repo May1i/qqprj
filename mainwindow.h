@@ -35,6 +35,7 @@ public:
     void onFriendItemClicked(QListWidgetItem *item);
     //主界面显示用户信息
     void showUserInfo(const QString &username, const QString &account, const QPixmap &icon);
+    void loadMainUserInfo();
 private slots:
     void on_pushButton_menu_clicked();
 

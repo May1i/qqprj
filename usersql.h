@@ -64,7 +64,11 @@ public:
     void showFriends(const QString &account);//联系人显示
 signals:
     void userFound(const QString &username, const QString &account, const QPixmap &icon);
+    //搜索功能
     void friendFound(const QString &username, const QString &account, const QPixmap &icon);
+
+    void mainUserInfo(const QString &username, const QString &account, const QPixmap &icon);
+    void friendInfo(const QString &username, const QString &account, const QPixmap &icon);
 };
 
 #endif // USERSQL_H

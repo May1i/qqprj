@@ -85,7 +85,7 @@ signin::signin(QWidget *parent) :
                 local_name.append(str);
                 this->ispasswd=true;
             }
-            qDebug()<<infopasswd;
+
         }
         QHBoxLayout *horLayout=new QHBoxLayout();//水平布局
         QLabel *la=new QLabel();
@@ -198,9 +198,9 @@ void signin::on_pushButton_clicked()
             bool isexist=file->exists(fileName);//判断是否存在这个路径
             if(isexist)//已经存在这个路径,直接进行创建txt文件
             {
-                qDebug()<<"这个路径已经存在";
+//                qDebug()<<"这个路径已经存在";
                 QFile file(fileName+"//data.txt");
-                qDebug()<<fileName+"//data.txt";
+//                qDebug()<<fileName+"//data.txt";
                 if(file.open(QIODevice::WriteOnly|QIODevice::Text|QIODevice::Truncate))
                 {
                     qDebug()<<"txt文件成功创建";
@@ -215,7 +215,7 @@ void signin::on_pushButton_clicked()
                 {
                     stream<<name<<"\n"<<passwd;
                 }
-                qDebug()<<icon.save(fileName+QString("//%1").arg(account),"JPG");
+//                qDebug()<<icon.save(fileName+QString("//%1").arg(account),"JPG");
                 file.close();
             }
             else//不存在这个路径,创建路径
@@ -275,7 +275,8 @@ void signin::on_comboBox_currentIndexChanged(int index)
         ui->checkBox_2->setChecked(true);
     }
     QString icon1=icon.at(index);
-    ui->label_3->setStyleSheet(QString("border-image: url(%1);border-width:0px;border-style:solid;border-color: rgb(255, 255, 255);border-radius:33px;").arg(icon1));
+    //可能需要进行修改
+    ui->label_3->setStyleSheet(QString("border-image: url(%1);width: 200px;height: 200px;border-radius: 50%;border: 2px solid rgb(255, 255, 255);").arg(icon1));
 }
 //下拉框自定义
 QStringList signin::getDirNameList(const QString &strDirpath)

@@ -107,7 +107,7 @@ QPixmap usersql::getPixmapIcon(const QString &url)
 
     }
     QPixmap pixmap=get_iconurl(strurl);
-    qDebug()<<pixmap;
+//    qDebug()<<pixmap;
     pixmap=this->icon.scaled(QSize(pixmap.width(),pixmap.height()),Qt::IgnoreAspectRatio);//进行规模缩放
 //    pixmap=PixmapToRound(pixmap, pixmap.width()/2); 反图片锯齿化
     return pixmap;
@@ -141,7 +141,7 @@ void usersql::searchUserInfo(const QString &account)
             QPixmap searchIcon = get_iconurl(query.value(5).toString());
             QString searchAcc = query.value(2).toString();
 
-            qDebug()<<this->searchIcon<<this->searchUsername<<this->searchAcc;
+//            qDebug()<<this->searchIcon<<this->searchUsername<<this->searchAcc;
             emit userFound(searchUsername, searchAcc, searchIcon); // 触发信号
             return;
         }

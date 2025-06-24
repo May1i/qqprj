@@ -5,12 +5,12 @@ MainWindow::MainWindow(QString account,usersql *db,QWidget *parent,QTcpSocket *t
 {
     ui->setupUi(this);
 //    ui->scrollArea->setFrameShape(QFrame::NoFrame);
-
-    connect(m_db, &usersql::userFound,[this](const QString &username, const QString &account, const QPixmap &icon)
+    connect(m_db, &usersql::mainUserInfo,[this](const QString &username, const QString &account, const QPixmap &icon)
     {
-        qDebug()<<"1";
         showUserInfo(username,account,icon);
     });
+    MainWindow::loadMainUserInfo();
+//    showUserInfo(username,account,icon);
     m_db->searchUserInfo(account);
     search_w=new search_friend(account,db,nullptr);
     search_w->hide();
@@ -140,4 +140,13 @@ void MainWindow::showUserInfo(const QString &username, const QString &account, c
     painter.drawPixmap(0, 0, icon.scaled(80, 80, Qt::KeepAspectRatio));
 
     ui->userIconLabel->setPixmap(circularPixmap);
+}
+void MainWindow::loadMainUserInfo()
+{
+    auto conn = std::make_shared<QMetaObject::Connection>();
+       *conn = connect(m_db, &usersql::userFound, this, [this, conn](QString  name, QString  acc,QPixmap icon) {
+           emit m_db->mainUserInfo(name, acc, icon);
+           disconnect(*conn);  // 只断开当前连接
+       });
+       m_db->searchUserInfo(account);
 }

@@ -22,6 +22,12 @@
      <height>350</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;黑体&quot;;</string>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QTextEdit" name="sendEdit">
    <property name="geometry">
@@ -32,31 +38,37 @@
      <height>200</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;黑体&quot;;</string>
+   </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="friendIcon">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>40</y>
-     <width>72</width>
-     <height>15</height>
+     <x>0</x>
+     <y>0</y>
+     <width>80</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="text">
     <string> 头像</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="friendName">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>90</x>
      <y>40</y>
-     <width>72</width>
-     <height>15</height>
+     <width>100</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 14pt &quot;黑体&quot;;</string>
+   </property>
    <property name="text">
-    <string>账号</string>
+    <string>姓名</string>
    </property>
   </widget>
   <widget class="QPushButton" name="closeBtn">

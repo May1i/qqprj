@@ -7,11 +7,11 @@ ui(new Ui::chat)
 {
     ui->setupUi(this);
     setWindowTitle("与 " + friendAcc + " 的聊天");
-    connect(m_db, &usersql::userFound,[this](const QString &name, const QString &account, const QPixmap &icon)
+    connect(m_db, &usersql::friendInfo,[this](const QString &name, const QString &account, const QPixmap &icon)
     {
         showFriendInfo(name,account,icon);
     });
-    m_db->searchUserInfo(friendAcc);
+    chat::loadFriendInfo();
 }
 
 chat::~chat()
@@ -39,12 +39,18 @@ void chat::showFriendInfo(const QString &name, const QString &account, const QPi
     ui->friendIcon->setPixmap(circularPixmap);
 }
 //聊天对象的info不进行改变的函数
-void chat::loadFriendInfo()
-{
-    auto conn = std::make_shared<QMetaObject::Connection>();
-       *conn = connect(m_db, &usersql::userFound, this, [this, conn](QString  name, QString  acc,QPixmap icon) {
-           emit m_db->friendInfo(name, acc, icon);
-           disconnect(*conn);  // 只断开当前连接
-       });
-       m_db->searchUserInfo(friendAcc);
+void chat::loadFriendInfo() {
+    // 使用成员变量保存连接
+    m_connection = connect(m_db, &usersql::userFound, this,
+        [this](const QString &name, const QString &acc, const QPixmap &icon) {
+            if (acc == this->friendAcc) {  // 关键：只处理当前窗口的好友
+                showFriendInfo(name, acc, icon);
+                disconnect(m_connection);  // 断开当前连接
+            }
+        },
+        Qt::UniqueConnection  // 防止重复连接
+    );
+    m_db->searchUserInfo(friendAcc);
 }
+
+

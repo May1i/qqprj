@@ -1,6 +1,7 @@
 #include "signin.h"
 #include "ui_signin.h"
 #include "usersql.h"
+#include"chat_client.h"
 signin::signin(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::signin)
@@ -9,6 +10,8 @@ signin::signin(QWidget *parent) :
     this->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
     ui->networkerror->hide();
     ui->notexist->hide();
+    //连接到服务器
+
     //系统托盘的实现
     systemtrayicon=new QSystemTrayIcon(this);
     QIcon icon=QIcon(":/lib/qq.jpg");
@@ -166,14 +169,25 @@ void signin::mouseMoveEvent(QMouseEvent *event)
 //进行登录按钮的实现
 void signin::on_pushButton_clicked()
 { 
+
     QNetworkConfigurationManager manager;
-    qDebug()<<manager.isOnline();
+//    进行连接到服务端
+    auto &client=*Client::GetInstance();
+    if (!client.clientConnect())
+    {
+        qDebug() << "Connection attempt failed immediately";
+    }
     if(!manager.isOnline())//网络错误
     {
         ui->networkerror->show();
     }
     else
     {
+        //
+        QObject::connect(ui->pushButton,&QPushButton::isChecked,[&]()
+        {
+
+        });
         this->network = new QNetworkAccessManager(this);//进行网络初始化
         //line_edit 为密码框 line2为账号
         db->conndata();//进行数据库连接
@@ -305,3 +319,4 @@ void signin::on_pushButton_3_clicked()
 {
     ui->notexist->hide();
 }
+

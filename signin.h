@@ -64,8 +64,9 @@ class signin : public QWidget
 public:
     explicit signin(QWidget *parent = nullptr);
     ~signin();
-
-
+    void connectToServer();
+    void onConnected();
+    void onConnectionError();
 private slots:
     void on_toolButton_del_clicked();
 

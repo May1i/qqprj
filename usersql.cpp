@@ -18,7 +18,7 @@ bool usersql::conndata()
         this->dbconn=QSqlDatabase::addDatabase("QMYSQL");//若没有就创建一个QMysql的数据库
     }
     this->dbconn.setHostName("127.0.0.1");//主机名称
-    this->dbconn.setDatabaseName("asuka_sql");
+    this->dbconn.setDatabaseName("asuka");
     if(this->dbconn.open("root", "123456"))//数据库名称和密码
     {
         //连接成功

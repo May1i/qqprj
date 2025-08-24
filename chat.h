@@ -1,9 +1,9 @@
 #ifndef CHAT_H
 #define CHAT_H
 
-#include <QWidget>
+
 #include "usersql.h"
-#include<QPainter>
+#include "global.h"
 namespace Ui {
 class chat;
 }
@@ -21,6 +21,7 @@ private:
     QString myAcc;
     QString friendAcc;
     usersql *m_db;
+    QMetaObject::Connection m_connection;
     Ui::chat *ui;
 };
 

@@ -19,8 +19,9 @@ public:
     bool clientConnect();
     void disconnect();
     bool isConnected()const; //判断连接
-    void recvMsgThread(LPVOID lpParameter);
-
+    void sendToServer(const QString &message);
+public slots:
+    void onReadyRead();
 signals:
     void connectEstablish();
     void connectFailed(const QString &error);

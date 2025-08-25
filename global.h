@@ -38,6 +38,7 @@
 #include<QThread>
 #include<QTimer>
 #include<QHostAddress>
+#include<QTextCodec>
 struct ServerInfo{
     QString Host;
     QString Port;

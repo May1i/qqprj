@@ -1,5 +1,6 @@
 #ifndef TCPMGR_H
 #define TCPMGR_H
+//对于粘包问题和数据的处理
 #include <QTcpSocket>
 #include "singleton.h"
 #include "global.h"

@@ -12,6 +12,11 @@ ui(new Ui::chat)
         showFriendInfo(name,account,icon);
     });
     chat::loadFriendInfo();
+    //连接信号槽
+//    QObject::connect(ui->sendBtn,QPushButton::isChecked,[]()
+//    {
+
+//    });
 }
 
 chat::~chat()

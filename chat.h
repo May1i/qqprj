@@ -4,6 +4,7 @@
 
 #include "usersql.h"
 #include "global.h"
+#include"chat_client.h"
 namespace Ui {
 class chat;
 }

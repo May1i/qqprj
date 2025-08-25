@@ -15,18 +15,24 @@ bool Client::clientConnect()
     const QHostAddress addr = QHostAddress("127.0.0.1");
     const quint16 port = 12345;
     // 连接信号槽
-    connect(m_socket, &QTcpSocket::connected, this, [&]()
+    QObject::connect(m_socket, &QTcpSocket::connected, this, [&]()
     {
         qDebug()<<"成功连接到服务端";
         m_connected=true;
         emit connectEstablish();
     });
-    connect(m_socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, [&]()
+    QObject::connect(m_socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, [&]()
     {
         qDebug()<<"连接到服务端失败";
         m_connected=false;
         emit connectFailed("error ");
     });
+    QObject::connect(m_socket,&QTcpSocket::readyRead,this,&Client::onReadyRead);
+    QObject::connect(m_socket,&QTcpSocket::disconnected,this,[&]()
+    {
+        qDebug()<<"与服务端断开连接,服务端主动关闭";
+    });
+
     m_socket->connectToHost(addr,port);
     // 设置连接超时定时器
     QTimer::singleShot(timeoutMs, this, [this]()
@@ -46,24 +52,21 @@ bool Client::isConnected() const
     return m_connected;
 }
 
-void Client::recvMsgThread(LPVOID lpParameter)
+void Client::sendToServer(const QString &message)
 {
-    QThread *recvThread=new QThread;
-    m_socket->moveToThread(recvThread);
-    while (1)
+
+}
+//进行数据接收
+void Client::onReadyRead()
+{
+    while(m_socket->bytesAvailable()>0)
     {
-        char buffer[BUFFER_SIZE] = { 0 };//字符缓冲区，用于接收和发送消息
-        int nrecv = QTcpSocket::recv(m_socket, buffer, sizeof(buffer), 0);//nrecv是接收到的字节数
-        if (nrecv > 0)//如果接收到的字符数大于0
-        {
-            cout << buffer << endl;
-        }
-        else if (nrecv < 0)//如果接收到的字符数小于0就说明断开连接
-        {
-            cout << "与服务器断开连接" << endl;
-            break;s
-        }
+        QByteArray data=m_socket->readAll();
+        data=data.replace('\x00',"");
+        //解码GBK中文
+        QTextCodec *codec = QTextCodec::codecForName("GBK");
+        QString message = codec->toUnicode(data);
+        qDebug()<<"接收:"<<message;
     }
 }
-
 

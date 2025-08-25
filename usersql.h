@@ -59,7 +59,7 @@ public:
     void setPasswd(const QString &value);
     QString getBuild_time()const;
     QString getIP()const;
-    void setIP(const QString &value);
+    void setIP(const QString &value); 
     void searchUserInfo(const QString &account);//进行用户搜索
     void showFriends(const QString &account);//联系人显示
 signals:

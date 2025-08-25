@@ -20,7 +20,7 @@ void search_friend::on_searchBtn_clicked()
     QString str=ui->searchLine->toPlainText().toUtf8();
     m_db->searchUserInfo(str);
 }
-
+//最好添加一个信号槽，找不到显示找不到，找到了显示账号
 void search_friend::addUserToList(const QString &username, const QString &account,const QPixmap &icon)
 {
 //    防止进行重复添加同一个用户

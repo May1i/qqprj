@@ -13,11 +13,12 @@
 #include <QEventLoop>//事件循环
 #include<QCoreApplication>
 #include <QLibrary>
+#include<singleton.h>
 #if _MSC_VER>=1600
 #pragma execution_character_set("utf-8")
 #endif //防止中文乱码
 
-class usersql:public QObject
+class usersql:public QObject,public Singleton<usersql>
 {
     Q_OBJECT
 private:

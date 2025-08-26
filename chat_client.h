@@ -9,6 +9,7 @@
 #include<Singleton.h >
 #include"global.h"
 #include<QTcpSocket>
+#include"usersql.h"
 class Client:public QObject,public Singleton<Client>
 {
     Q_OBJECT

@@ -1,7 +1,5 @@
 #ifndef CHAT_H
 #define CHAT_H
-
-
 #include "usersql.h"
 #include "global.h"
 #include"chat_client.h"
@@ -18,9 +16,13 @@ public:
     ~chat();
     void showFriendInfo(const QString &name, const QString &account, const QPixmap &icon);
     void loadFriendInfo();
+private slots:
+    void on_sendBtn_clicked();
+
 private:
     QString myAcc;
     QString friendAcc;
+
     usersql *m_db;
     QMetaObject::Connection m_connection;
     Ui::chat *ui;

@@ -19,7 +19,7 @@ public:
     bool clientConnect();
     void disconnect();
     bool isConnected()const; //判断连接
-    void sendToServer(const QString &message);
+    void sendToServer(const QString &account,const QString &message);
 public slots:
     void onReadyRead();
 signals:
@@ -31,6 +31,7 @@ private:
     QTcpSocket *m_socket;
     bool m_connected;
     static const int BUFFER_SIZE=1024;
+    static std::shared_ptr<Client> _instance;
 };
 
 #endif // CHAT_Client_H

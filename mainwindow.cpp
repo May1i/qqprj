@@ -20,7 +20,7 @@ MainWindow::MainWindow(QString account,usersql *db,QWidget *parent,QTcpSocket *t
 
     connect(m_db, &usersql::friendFound, this, &MainWindow::addFriendToList);
     m_db->showFriends(account);
-    //进行打开聊天窗口
+    //进行打开聊天窗口//修改多次打开
     connect(ui->listWidget, &QListWidget::itemClicked, this, &MainWindow::onFriendItemClicked);
 }
 

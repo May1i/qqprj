@@ -1,6 +1,6 @@
 #include "chat.h"
 #include "ui_chat.h"
-
+#include"chat_client.h"
 chat::chat(const QString &myAccount, const QString &friendAccount, usersql *db,QWidget *parent) :
     QWidget(parent),myAcc(myAccount),friendAcc(friendAccount),m_db(db),
 ui(new Ui::chat)
@@ -12,11 +12,7 @@ ui(new Ui::chat)
         showFriendInfo(name,account,icon);
     });
     chat::loadFriendInfo();
-    //连接信号槽
-//    QObject::connect(ui->sendBtn,QPushButton::isChecked,[]()
-//    {
 
-//    });
 }
 
 chat::~chat()
@@ -30,6 +26,7 @@ void chat::showFriendInfo(const QString &name, const QString &account, const QPi
     //显示账号名称
 //    ui->userAccLabel->setText("账号:"+account);
     ui->friendName->setText(name);
+//    ui->friendAcc
 //    QString friendAcc=account;
     //圆形头像实现
     QPixmap circularPixmap(80, 80);
@@ -59,3 +56,13 @@ void chat::loadFriendInfo() {
 }
 
 
+
+void chat::on_sendBtn_clicked()
+{
+    QString sendEdit = ui->sendEdit->toPlainText().toUtf8();
+    qDebug()<<sendEdit;
+    QString friend_Acc=friendAcc;
+    ui->sendEdit->clear();
+    auto client = Client::GetInstance();
+    client->sendToServer(friend_Acc,sendEdit);
+}

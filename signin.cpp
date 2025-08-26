@@ -172,8 +172,8 @@ void signin::on_pushButton_clicked()
 
     QNetworkConfigurationManager manager;
 //    进行连接到服务端
-    auto &client=*Client::GetInstance();
-    if (!client.clientConnect())
+    auto client=Client::GetInstance();
+    if (!client->clientConnect())
     {
         qDebug() << "Connection attempt failed immediately";
     }

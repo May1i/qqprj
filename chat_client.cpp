@@ -1,5 +1,6 @@
 #include"chat_client.h"
-
+// 初始化静态成员变量
+std::shared_ptr<Client> Client::_instance = nullptr;
 Client::Client(QObject *parent)
 {
 
@@ -52,9 +53,19 @@ bool Client::isConnected() const
     return m_connected;
 }
 
-void Client::sendToServer(const QString &message)
+void Client::sendToServer(const QString &account,const QString &message)
 {
-
+    if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState)
+    {
+        QByteArray data = message.toUtf8(); // 转换为UTF-8编码
+        m_socket->write(data);
+        m_socket->flush(); // 确保立即发送
+        qDebug() << "已发送消息到服务端:" << message;
+    }
+    else
+    {
+        qDebug() << "未连接到服务端，无法发送消息";
+    }
 }
 //进行数据接收
 void Client::onReadyRead()

@@ -265,7 +265,7 @@ void signin::on_pushButton_clicked()
             {
                 this->hide();
                 systemtrayicon->hide();
-                w = new MainWindow(account,db);
+                w = new MainWindow(account,db,client->GetInstance()->getSocket());
                 w->show();
                 w->showicon(account);
                 w->setAttribute(Qt::WA_DeleteOnClose);//如果窗口设置了Qt::WA_DeleteOnClose 这个属性，在窗口接受了关闭事件后，Qt会释放这个窗口所占用的资源。

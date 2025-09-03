@@ -11,6 +11,8 @@
 #include <QListWidgetItem>
 #include"chat.h"
 #include <QMap>
+
+#include"chat_client.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -28,7 +30,7 @@ private:
     search_friend *search_w;
     QMap<QString, chat*> m_chatWindows; // 账号到窗口的映射
 public:
-    MainWindow(QString account,usersql *db,QWidget *parent = nullptr,QTcpSocket *tcpClient=nullptr);
+    MainWindow(QString account,usersql *db,QTcpSocket *m_socket=nullptr,QWidget *parent = nullptr);
     ~MainWindow();
     void showicon(QString account);
     void addFriendToList(const QString &username, const QString &account, const QPixmap &icon);
@@ -43,5 +45,6 @@ private:
     usersql *m_db;
     QString account;
     Ui::MainWindow *ui;
+    QTcpSocket *tcpClient;
 };
 #endif // MAINWINDOW_H

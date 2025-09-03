@@ -1,7 +1,7 @@
 #include"chat_client.h"
 // 初始化静态成员变量
 std::shared_ptr<Client> Client::_instance = nullptr;
-Client::Client(QObject *parent)
+Client::Client(usersql *db,QObject *parent):m_db(db)
 {
 
 }
@@ -48,6 +48,11 @@ bool Client::clientConnect()
     return true;
 }
 
+QTcpSocket *Client::getSocket()const
+{
+    return m_socket;
+}
+
 bool Client::isConnected() const
 {
     return m_connected;
@@ -55,7 +60,7 @@ bool Client::isConnected() const
 
 void Client::sendToServer(const QString &account,const QString &message)
 {
-//    usersql::queryUserInfo(account);
+
     if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState)
     {
         QByteArray data = message.toUtf8(); // 转换为UTF-8编码
@@ -76,8 +81,7 @@ void Client::onReadyRead()
         QByteArray data=m_socket->readAll();
         data=data.replace('\x00',"");
         //解码GBK中文
-        QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        QString message = codec->toUnicode(data);
+        QString message =QString::fromUtf8(data);
         qDebug()<<"接收:"<<message;
     }
 }

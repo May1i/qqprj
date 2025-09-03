@@ -6,21 +6,25 @@
 //#include<iostream>
 #include<Winsock2.h>//socket头文件
 #include <WS2tcpip.h>
-#include<Singleton.h >
+#include<Singleton.h>
 #include"global.h"
 #include<QTcpSocket>
 #include"usersql.h"
+
 class Client:public QObject,public Singleton<Client>
 {
     Q_OBJECT
     friend class Singleton<Client>;  // 允许单例模板访问私有构造函数
 public:
-    explicit Client(QObject *parent=nullptr);
+    explicit Client(usersql *db,QObject *parent=nullptr);
+    Client(){}
     ~Client();
     bool clientConnect();
     void disconnect();
+    QTcpSocket* getSocket()const ;
     bool isConnected()const; //判断连接
     void sendToServer(const QString &account,const QString &message);
+    void makeJsonSend();
 public slots:
     void onReadyRead();
 signals:
@@ -33,6 +37,7 @@ private:
     bool m_connected;
     static const int BUFFER_SIZE=1024;
     static std::shared_ptr<Client> _instance;
+    usersql *m_db;
 };
 
 #endif // CHAT_Client_H

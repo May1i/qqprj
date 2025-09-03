@@ -39,6 +39,14 @@
 #include<QTimer>
 #include<QHostAddress>
 #include<QTextCodec>
+
+//操作Json文件所需要用到的头文件：
+#include <QJsonObject> // { }
+#include <QJsonArray> // [ ]
+#include <QJsonDocument> // 解析Json
+#include <QJsonValue> // int float double bool null { } [ ]
+#include <QJsonParseError>
+
 struct ServerInfo{
     QString Host;
     QString Port;

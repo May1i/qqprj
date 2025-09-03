@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-MainWindow::MainWindow(QString account,usersql *db,QWidget *parent,QTcpSocket *tcpClient)
-    : QMainWindow(parent),m_db(db),account(account), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QString account,usersql *db,QTcpSocket *m_socket,QWidget *parent)
+    : QMainWindow(parent),m_db(db),account(account), tcpClient(m_socket),ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 //    ui->scrollArea->setFrameShape(QFrame::NoFrame);
@@ -100,8 +100,35 @@ void MainWindow::addFriendToList(const QString &username, const QString &account
 }
 //打开聊天窗口
 void MainWindow::onFriendItemClicked(QListWidgetItem *item) {
+    //进行指定对方的ip和端口号
     // 获取存储的账号
     QString friendAcc = item->data(Qt::UserRole).toString();
+    QString friendNetInfo;
+    QString Ip,Port;
+    QMetaObject::Connection conn = QObject::connect(m_db, &usersql::friendNetInfo, this, [&friendNetInfo](QString Ip, QString Port)
+    {
+        friendNetInfo=Ip+"/"+Port;
+    });
+    m_db->searchFriendInfo(friendAcc);
+    if(friendNetInfo!="")
+    {
+        qDebug()<<friendNetInfo;
+    }
+    if(tcpClient==nullptr)
+    {
+        qDebug()<<"为空指针";
+    }
+    if (tcpClient &&tcpClient->state() == QAbstractSocket::ConnectedState)
+    {
+        QByteArray data = friendNetInfo.toUtf8(); // 转换为UTF-8编码
+        tcpClient->write(data);
+        tcpClient->flush(); // 确保立即发送
+        qDebug() << "已发送消息到服务端:" << friendNetInfo;
+    }
+    else
+    {
+        qDebug() << "未连接到服务端，无法发送消息";
+    }
 
     // 创建或激活聊天窗口
     if (!m_chatWindows.contains(friendAcc))

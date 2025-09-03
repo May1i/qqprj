@@ -17,7 +17,7 @@ bool usersql::conndata()
     {
         this->dbconn=QSqlDatabase::addDatabase("QMYSQL");//若没有就创建一个QMysql的数据库
     }
-    this->dbconn.setHostName("127.0.0.1");//主机名称
+    this->dbconn.setHostName("127.0.0.1");//主机ip
     this->dbconn.setDatabaseName("asuka");
     if(this->dbconn.open("root", "123456"))//数据库名称和密码
     {
@@ -121,10 +121,12 @@ void usersql::queryUserInfo(const QString &account)
         if(this->query.value(2)==account)
         {
             this->username=this->query.value(1).toString();//名称
-            this->icon=get_iconurl(this->query.value(5).toString());//iconurl
             this->account=this->query.value(2).toString();//账号
             this->passwd=this->query.value(3).toString();//密码
             this->build_time=this->query.value(4).toString();//创建时间
+            this->icon=get_iconurl(this->query.value(5).toString());//iconurl
+            this->IP=this->query.value(6).toString();//ip地址
+            this->port=this->query.value(7).toString();//port
         }
     }
 }
@@ -148,6 +150,7 @@ void usersql::searchUserInfo(const QString &account)
     }
     qDebug()<<"没有找到该账户";
 }
+
 // 进行直接好友添加
 bool usersql::addFriendDirectly(const QString &userId, const QString &friendId)
 {
@@ -180,6 +183,23 @@ bool usersql::addFriendDirectly(const QString &userId, const QString &friendId)
     }
     qDebug() << "好友添加成功！";
     return true;
+}
+
+void usersql::searchFriendInfo(const QString &acc)
+{
+    this->query.exec(cmd);
+    while (query.next())
+    {
+        if(this->query.value(2)==acc)
+        {
+            QString searchFriendIP=query.value(6).toString();
+            QString searchFriendPort=query.value(7).toString();
+            qDebug()<<searchFriendIP<<searchFriendPort;
+            emit friendNetInfo(searchFriendIP,searchFriendPort); // 触发信号
+            return;
+        }
+    }
+    qDebug()<<"没有找到该账户";
 }
 //进行联系人显示
 void usersql::showFriends(const QString &account)

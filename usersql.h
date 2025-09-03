@@ -13,27 +13,27 @@
 #include <QEventLoop>//事件循环
 #include<QCoreApplication>
 #include <QLibrary>
-#include<singleton.h>
 #if _MSC_VER>=1600
 #pragma execution_character_set("utf-8")
 #endif //防止中文乱码
 
-class usersql:public QObject,public Singleton<usersql>
+class usersql:public QObject
 {
     Q_OBJECT
+     // 允许单例模板访问私有构造函数
 private:
 
      QSqlDatabase dbconn;//进行数据库的链接
      QSqlQuery query;//进行查询操作
 
-     QString IP;
+     QString IP;//ip地址
      QString account;//账号
      QString passwd;//密码
      QString iconUrl;//头像地址
      QPixmap icon;//头像
      QString username;//名称
      QString build_time;//注册时间
-
+     QString port;//端口号
      QString cmd=QString("select *from `user`");//如果没有用全部的名称,需要用反引号``来包围table
      //搜索功能
      QString searchUsername;
@@ -48,7 +48,7 @@ public:
     QPixmap getPixmapIcon(const QString &acc);//通过账号获取地址
     void queryUserInfo(const QString &account);//获取信息
     bool addFriendDirectly(const QString &userId,const QString &friendId);//直接进行好友添加
-
+    void searchFriendInfo(const QString& acc);
     //get set
     QString getAccount()const;
     void setAccount(const QString &value);
@@ -70,6 +70,8 @@ signals:
 
     void mainUserInfo(const QString &username, const QString &account, const QPixmap &icon);
     void friendInfo(const QString &username, const QString &account, const QPixmap &icon);
+
+    void friendNetInfo(const QString &Ip,const QString &Port);
 };
 
 #endif // USERSQL_H

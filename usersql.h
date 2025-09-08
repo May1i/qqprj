@@ -20,7 +20,7 @@
 class usersql:public QObject
 {
     Q_OBJECT
-     // 允许单例模板访问私有构造函数
+
 private:
 
      QSqlDatabase dbconn;//进行数据库的链接

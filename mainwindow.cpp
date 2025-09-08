@@ -100,35 +100,43 @@ void MainWindow::addFriendToList(const QString &username, const QString &account
 }
 //打开聊天窗口
 void MainWindow::onFriendItemClicked(QListWidgetItem *item) {
-    //进行指定对方的ip和端口号
-    // 获取存储的账号
+//    //进行指定对方的ip和端口号
+//    // 获取存储的账号
+
     QString friendAcc = item->data(Qt::UserRole).toString();
-    QString friendNetInfo;
-    QString Ip,Port;
-    QMetaObject::Connection conn = QObject::connect(m_db, &usersql::friendNetInfo, this, [&friendNetInfo](QString Ip, QString Port)
-    {
-        friendNetInfo=Ip+"/"+Port;
-    });
-    m_db->searchFriendInfo(friendAcc);
-    if(friendNetInfo!="")
-    {
-        qDebug()<<friendNetInfo;
-    }
-    if(tcpClient==nullptr)
-    {
-        qDebug()<<"为空指针";
-    }
-    if (tcpClient &&tcpClient->state() == QAbstractSocket::ConnectedState)
-    {
-        QByteArray data = friendNetInfo.toUtf8(); // 转换为UTF-8编码
-        tcpClient->write(data);
-        tcpClient->flush(); // 确保立即发送
-        qDebug() << "已发送消息到服务端:" << friendNetInfo;
-    }
-    else
-    {
-        qDebug() << "未连接到服务端，无法发送消息";
-    }
+//    QString friendNetInfo;
+//    QString Ip,Port;
+//    QMetaObject::Connection conn = QObject::connect(m_db, &usersql::friendNetInfo, this, [&friendNetInfo](QString Ip, QString Port)
+//    {
+//        friendNetInfo=Ip+"/"+Port;
+//    });
+//    m_db->searchFriendInfo(friendAcc);
+//    if(friendNetInfo!="")
+//    {
+//        qDebug()<<friendNetInfo;
+//    }
+//    if(tcpClient==nullptr)
+//    {
+//        qDebug()<<"为空指针";
+//    }
+//    if (tcpClient &&tcpClient->state() == QAbstractSocket::ConnectedState)
+//    {
+//        //采用json方式发送
+//        QJsonObject json;
+//        json["content"] = friendNetInfo;
+//        json["timestamp"] = QDateTime::currentDateTime().toString();//建立连接的时间
+//        json["type"] = "friendNetInfo";
+//        QJsonDocument doc(json);
+//        tcpClient->write(doc.toJson());
+////        QByteArray data = friendNetInfo.toUtf8(); // 转换为UTF-8编码
+////        tcpClient->write(data);
+////        tcpClient->flush(); // 确保立即发送
+//        qDebug() << "已发送消息到服务端:" << friendNetInfo;
+//    }
+//    else
+//    {
+//        qDebug() << "未连接到服务端，无法发送消息";
+//    }
 
     // 创建或激活聊天窗口
     if (!m_chatWindows.contains(friendAcc))

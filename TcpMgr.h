@@ -20,7 +20,6 @@ private:
     quint16 _message_len;
     void handleMsg(ReqId id, int len, QByteArray data);
     void initHandles();
-
 public slots:
     void slot_tcp_connect(ServerInfo);
     void slot_send_data(ReqId reqId, QString data);

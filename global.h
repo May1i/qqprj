@@ -35,10 +35,12 @@
 #include <QLabel>
 #include<QPainter>
 
+#include<QPointer>
 #include<QThread>
 #include<QTimer>
 #include<QHostAddress>
 #include<QTextCodec>
+#include<QMutexLocker>
 
 //操作Json文件所需要用到的头文件：
 #include <QJsonObject> // { }

@@ -9,6 +9,7 @@ usersql::~usersql()
 //连接数据库
 bool usersql::conndata()
 {
+
     if(QSqlDatabase::contains(QSqlDatabase::defaultConnection))//为如果存在默认的连接
     {
         this->dbconn=QSqlDatabase::database(QSqlDatabase::defaultConnection);//获取该对象,避免重复创建连接

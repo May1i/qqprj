@@ -1,7 +1,8 @@
 #include"chat_client.h"
+
 // 初始化静态成员变量
 std::shared_ptr<Client> Client::_instance = nullptr;
-Client::Client(usersql *db,QObject *parent):m_db(db)
+Client::Client(std::shared_ptr<usersql> db,QObject *parent):m_db(db)
 {
 
 }
@@ -57,21 +58,41 @@ bool Client::isConnected() const
 {
     return m_connected;
 }
+//void Client::sendToServer(const QString &account, const QString &message)
+//{
+//    qDebug()<<m_db;
+//}
 
-void Client::sendToServer(const QString &account,const QString &message)
+void Client::sendToServer(const QString &account, const QString &message)
 {
+    // 使用智能指针来管理连接
+    auto connPtr = std::make_shared<QMetaObject::Connection>();
 
-    if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState)
-    {
-        QByteArray data = message.toUtf8(); // 转换为UTF-8编码
-        m_socket->write(data);
-        m_socket->flush(); // 确保立即发送
-        qDebug() << "已发送消息到服务端:" << message;
-    }
-    else
-    {
-        qDebug() << "未连接到服务端，无法发送消息";
-    }
+    *connPtr = QObject::connect(m_db.get(), &usersql::friendNetInfo, this,
+        [this, message, connPtr](const QString &Ip, const QString &Port)
+        {
+            QString friendNetInfo = Ip + "/" + Port;
+            qDebug() << "查询到好友网络信息:" << friendNetInfo;
+
+            if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState)
+            {
+                QJsonObject json;
+                json["content"] = message;
+                json["timestamp"] = QDateTime::currentDateTime().toString();
+                json["friendNetInfo"] = friendNetInfo;
+                json["type"] = "chat_message";
+                QJsonDocument doc(json);
+                m_socket->write(doc.toJson());
+                qDebug() << "已发送消息到服务端:" << message;
+            } else {
+                qDebug() << "未连接到服务端，无法发送消息";
+        }
+
+            // 断开连接
+            QObject::disconnect(*connPtr);
+        });
+
+    m_db->searchFriendInfo(account);
 }
 //进行数据接收
 void Client::onReadyRead()
@@ -85,4 +106,17 @@ void Client::onReadyRead()
         qDebug()<<"接收:"<<message;
     }
 }
+void Client::initialize(usersql *db)
+{
+    if (!db) {
+        qDebug() << "错误：传入的db为nullptr";
+        return;
+    }
 
+    // 将普通指针转换为智能指针
+    m_db = std::shared_ptr<usersql>(db, [](usersql*){}); // 使用空删除器
+    // 或者如果不需要管理生命周期：
+    // m_db = std::shared_ptr<usersql>(db, [](usersql*){});
+
+    qDebug() << "Client db已设置";
+}
